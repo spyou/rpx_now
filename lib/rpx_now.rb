@@ -142,6 +142,7 @@ module RPXNow
         data[key] = user_data[key.to_s]
       end
     end
+    data[:extended] = response
     data
   end
 

@@ -217,6 +217,7 @@ describe RPXNow do
         :email      => 'grosser.michael@googlemail.com',
         :identifier => 'https://www.google.com/accounts/o8/id?id=AItOawmaOlyYezg_WfbgP_qjaUyHjmqZD9qNIVM',
         :username   => 'grosser.michael',
+        :extended   => {"profile"=>{"verifiedEmail"=>"grosser.michael@googlemail.com", "displayName"=>"Michael Grosser", "preferredUsername"=>"grosser.michael", "identifier"=>"https://www.google.com/accounts/o8/id?id=AItOawmaOlyYezg_WfbgP_qjaUyHjmqZD9qNIVM", "email"=>"grosser.michael@gmail.com"}, "stat"=>"ok"},
       }
       RPXNow::Api.should_receive(:request).and_return @response
       RPXNow.user_data('').should == expected
@@ -315,6 +316,10 @@ describe RPXNow do
     
     it "parses email when no name is found" do
       RPXNow.send(:parse_user_data,{'profile'=>{'email'=>'1@xxx.com'}}, {})[:name].should == '1'
+    end
+
+    it "makes friends data available" do
+      RPXNow.send(:parse_user_data,{'profile'=>{'email'=>'1@xxx.com'},'friends'=>['friend1','friend2']},{})[:extended]["friends"].should == ["friend1","friend2"]
     end
   end
 
