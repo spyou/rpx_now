@@ -135,6 +135,7 @@ module RPXNow
     data[:username] = user_data['preferredUsername'] || data[:email].to_s.sub(/@.*/,'')
     data[:name] = user_data['displayName'] || data[:username]
     data[:id] = user_data['primaryKey'] unless user_data['primaryKey'].to_s.empty?
+    data[:extended] = response if options[:extended] == true
     (options[:additional] || []).each do |key|
       if key == :raw
         data[key] = user_data
@@ -142,7 +143,6 @@ module RPXNow
         data[key] = user_data[key.to_s]
       end
     end
-    data[:extended] = response
     data
   end
 
